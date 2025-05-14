@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import LoginModal from "../auth/LoginModal";
 import { useAuth } from "../../contexts/AuthContext";
+import LoginButton from "../auth/LoginButton";
 
 function Header() {
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
@@ -45,20 +46,12 @@ function Header() {
           {isLoggedIn ? (
             <div className="flex items-center space-x-4">
               <span className="text-gray-600">Hello, {userName}</span>
-              <button
-                onClick={handleLogout}
-                className="border border-primary-500 text-primary-500 hover:bg-primary-50 font-medium px-4 py-2 rounded-lg transition-colors"
-              >
+              <LoginButton variant="secondary" onClick={handleLogout}>
                 Sign Out
-              </button>
+              </LoginButton>
             </div>
           ) : (
-            <button
-              onClick={openLoginModal}
-              className="bg-primary-500 hover:bg-primary-600 text-white font-medium px-4 py-2 rounded-lg transition-colors"
-            >
-              Sign In
-            </button>
+            <LoginButton onClick={openLoginModal}>Sign In</LoginButton>
           )}
         </div>
       </div>
