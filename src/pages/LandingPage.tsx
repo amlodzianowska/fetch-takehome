@@ -1,4 +1,3 @@
-import Footer from "../components/layout/Footer";
 import Hero from "../components/sections/Hero";
 import HowItWorks from "../components/sections/HowItWorks";
 import FeaturedPetsSection from "../components/sections/FeaturedPetsSection";
@@ -11,7 +10,6 @@ function LandingPage() {
       <HowItWorks />
       <FeaturedPetsSection />
       <Cta />
-      <Footer />
     </div>
   );
 }
