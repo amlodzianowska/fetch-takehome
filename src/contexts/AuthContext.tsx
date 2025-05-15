@@ -52,8 +52,8 @@ export function AuthProvider({ children }: AuthProviderProps) {
         try {
           const errorData = await response.json();
           errorMessage = errorData.message || errorMessage;
-        } catch (e) {
-          // Ignore JSON parsing errors
+        } catch (error) {
+          console.error("Failed to parse error response:", error);
         }
         throw new Error(errorMessage);
       }
@@ -61,8 +61,6 @@ export function AuthProvider({ children }: AuthProviderProps) {
       setIsLoggedIn(true);
       setUserName(name);
       localStorage.setItem("userName", name);
-
-      console.log("Login successful, auth state will be updated");
     } catch (error) {
       console.error("Login failed:", error);
       throw error;
@@ -91,6 +89,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
       setUserName(null);
       localStorage.removeItem("userName");
     } catch (error) {
+      console.error("Logout failed:", error);
       setIsLoggedIn(false);
       setUserName(null);
       localStorage.removeItem("userName");
@@ -102,8 +101,6 @@ export function AuthProvider({ children }: AuthProviderProps) {
       const savedUserName = localStorage.getItem("userName");
 
       if (savedUserName) {
-        console.log("Found saved username:", savedUserName);
-
         try {
           const response = await fetch(
             "https://frontend-take-home-service.fetch.com/dogs/breeds",
@@ -119,10 +116,9 @@ export function AuthProvider({ children }: AuthProviderProps) {
             localStorage.removeItem("userName");
           }
         } catch (error) {
+          console.error("Error checking authentication:", error);
           localStorage.removeItem("userName");
         }
-      } else {
-        console.log("No saved authentication found");
       }
     };
 
