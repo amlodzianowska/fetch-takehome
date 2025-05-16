@@ -1,8 +1,11 @@
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../../contexts/AuthContext";
 
 function Hero() {
   const navigate = useNavigate();
+  const { isLoggedIn } = useAuth();
   const heroImagePath = "/src/assets/images/dog-hero.png";
+
   return (
     <div
       className="relative h-screen bg-cover bg-center flex items-center"
@@ -23,18 +26,14 @@ function Hero() {
             home they deserve.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center md:justify-start">
-            <button
-              onClick={() => navigate("/browse")}
-              className="bg-primary-500 hover:bg-primary-600 text-white font-medium px-8 py-3 rounded-lg text-lg transition-all shadow-lg hover:shadow-xl"
-            >
-              Browse Pets
-            </button>
-            <button
-              onClick={() => navigate("/login")}
-              className="bg-transparent border-2 border-white hover:bg-white hover:text-primary-800 text-white font-medium px-8 py-3 rounded-lg text-lg transition-all"
-            >
-              Sign Up / Login
-            </button>
+            {isLoggedIn && (
+              <button
+                onClick={() => navigate("/browse")}
+                className="bg-primary-500 hover:bg-primary-600 text-white font-medium px-8 py-3 rounded-lg text-lg transition-all shadow-lg hover:shadow-xl"
+              >
+                Browse Pets
+              </button>
+            )}
           </div>
         </div>
       </div>
