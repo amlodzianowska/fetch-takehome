@@ -8,12 +8,9 @@ function Header() {
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
   const { isLoggedIn, logout, userName } = useAuth();
 
-  // Add console log to debug auth state
-  console.log("Header rendering with auth state:", { isLoggedIn, userName });
 
   const openLoginModal = () => setIsLoginModalOpen(true);
   const closeLoginModal = () => {
-    console.log("Closing login modal");
     setIsLoginModalOpen(false);
   };
 
