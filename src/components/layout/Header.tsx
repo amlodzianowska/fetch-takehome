@@ -1,18 +1,13 @@
-import { useState } from "react";
 import { Link } from "react-router-dom";
-import LoginModal from "../auth/LoginModal";
 import { useAuth } from "../../contexts/AuthContext";
 import LoginButton from "../auth/LoginButton";
 
-function Header() {
-  const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
+interface HeaderProps {
+  openLoginModal?: () => void;
+}
+
+function Header({ openLoginModal }: HeaderProps) {
   const { isLoggedIn, logout, userName } = useAuth();
-
-
-  const openLoginModal = () => setIsLoginModalOpen(true);
-  const closeLoginModal = () => {
-    setIsLoginModalOpen(false);
-  };
 
   const handleLogout = async () => {
     try {
@@ -52,12 +47,6 @@ function Header() {
           )}
         </div>
       </div>
-
-      <LoginModal
-        isOpen={isLoginModalOpen}
-        onClose={closeLoginModal}
-        onSuccess={closeLoginModal} // Explicitly pass closeLoginModal as onSuccess
-      />
     </header>
   );
 }
