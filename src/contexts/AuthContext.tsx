@@ -90,6 +90,8 @@ export function AuthProvider({ children }: AuthProviderProps) {
       localStorage.removeItem("userName");
     } catch (error) {
       console.error("Logout failed:", error);
+    } finally {
+      // Always clean up local state, even if the API call fails
       setIsLoggedIn(false);
       setUserName(null);
       localStorage.removeItem("userName");
