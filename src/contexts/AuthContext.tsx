@@ -125,15 +125,13 @@ export function AuthProvider({ children }: AuthProviderProps) {
     checkAuthentication();
   }, []);
 
-  const authContextValue = {
-    isLoggedIn,
-    login,
-    logout,
-    userName,
-  };
-
   const memoizedValue = React.useMemo(
-    () => authContextValue,
+    () => ({
+      isLoggedIn,
+      login,
+      logout,
+      userName,
+    }),
     [isLoggedIn, userName, login, logout]
   );
 
