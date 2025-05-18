@@ -33,6 +33,12 @@ export function AuthProvider({ children }: AuthProviderProps) {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userName, setUserName] = useState<string | null>(null);
 
+  const cleanupLocalState = useCallback(() => {
+    setIsLoggedIn(false);
+    setUserName(null);
+    localStorage.removeItem("userName");
+  }, []);
+
   const login = useCallback(async (name: string, email: string) => {
     try {
       const response = await fetch(
@@ -85,18 +91,13 @@ export function AuthProvider({ children }: AuthProviderProps) {
         );
       }
 
-      setIsLoggedIn(false);
-      setUserName(null);
-      localStorage.removeItem("userName");
+      cleanupLocalState();
     } catch (error) {
       console.error("Logout failed:", error);
     } finally {
-      // Always clean up local state, even if the API call fails
-      setIsLoggedIn(false);
-      setUserName(null);
-      localStorage.removeItem("userName");
+      cleanupLocalState();
     }
-  }, []);
+  }, [cleanupLocalState]);
 
   useEffect(() => {
     const checkAuthentication = async () => {
