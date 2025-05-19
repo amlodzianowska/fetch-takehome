@@ -5,7 +5,7 @@ import React, {
   useEffect,
   useCallback,
 } from "react";
-import type { ReactNode } from "react";
+import type { PropsWithChildren } from "react";
 
 interface AuthContextType {
   isLoggedIn: boolean;
@@ -25,11 +25,7 @@ export function useAuth() {
   return useContext(AuthContext);
 }
 
-interface AuthProviderProps {
-  children: ReactNode;
-}
-
-export function AuthProvider({ children }: AuthProviderProps) {
+export function AuthProvider({ children }: PropsWithChildren) {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userName, setUserName] = useState<string | null>(null);
 
