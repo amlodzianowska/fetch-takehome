@@ -1,10 +1,9 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import type { SubmitHandler } from "react-hook-form";
+import type { SubmitHandler, UseFormRegisterReturn } from "react-hook-form";
 import { useAuth } from "../../contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
 
-// Define interface for form inputs
 interface LoginInputs {
   name: string;
   email: string;
@@ -13,6 +12,57 @@ interface LoginInputs {
 interface LoginFormProps {
   onSuccess?: () => void;
 }
+
+interface FormField {
+  id: string;
+  label: string;
+  type?: string;
+  error?: string;
+  registration: UseFormRegisterReturn;
+}
+
+function FormField({
+  id,
+  label,
+  type = "text",
+  error,
+  registration,
+}: FormField) {
+  return (
+    <div>
+      <label htmlFor={id} className="block text-sm font-medium text-gray-700">
+        {label}
+      </label>
+      <input
+        id={id}
+        type={type}
+        autoComplete={id}
+        className={`mt-1 appearance-none relative block w-full px-3 py-2 border ${
+          error ? "border-red-300" : "border-gray-300"
+        } placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-primary-500 focus:border-primary-500 sm:text-sm`}
+        {...registration}
+      />
+      {error && <p className="mt-1 text-sm text-red-600">{error}</p>}
+    </div>
+  );
+}
+
+const VALIDATION_RULES = {
+  name: {
+    required: "Name is required",
+    minLength: {
+      value: 2,
+      message: "Name must have at least 2 characters",
+    },
+  },
+  email: {
+    required: "Email is required",
+    pattern: {
+      value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+      message: "Invalid email address",
+    },
+  },
+};
 
 function LoginForm({ onSuccess }: LoginFormProps) {
   const [error, setError] = useState<string | null>(null);
@@ -63,59 +113,20 @@ function LoginForm({ onSuccess }: LoginFormProps) {
       )}
 
       <div className="space-y-4">
-        <div>
-          <label
-            htmlFor="name"
-            className="block text-sm font-medium text-gray-700"
-          >
-            Name
-          </label>
-          <input
-            id="name"
-            type="text"
-            autoComplete="name"
-            className={`mt-1 appearance-none relative block w-full px-3 py-2 border ${
-              errors.name ? "border-red-300" : "border-gray-300"
-            } placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-primary-500 focus:border-primary-500 sm:text-sm`}
-            {...register("name", {
-              required: "Name is required",
-              minLength: {
-                value: 2,
-                message: "Name must have at least 2 characters",
-              },
-            })}
-          />
-          {errors.name && (
-            <p className="mt-1 text-sm text-red-600">{errors.name.message}</p>
-          )}
-        </div>
+        <FormField
+          id="name"
+          label="Name"
+          error={errors.name?.message}
+          registration={register("name", VALIDATION_RULES.name)}
+        />
 
-        <div>
-          <label
-            htmlFor="email"
-            className="block text-sm font-medium text-gray-700"
-          >
-            Email address
-          </label>
-          <input
-            id="email"
-            type="email"
-            autoComplete="email"
-            className={`mt-1 appearance-none relative block w-full px-3 py-2 border ${
-              errors.email ? "border-red-300" : "border-gray-300"
-            } placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-primary-500 focus:border-primary-500 sm:text-sm`}
-            {...register("email", {
-              required: "Email is required",
-              pattern: {
-                value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-                message: "Invalid email address",
-              },
-            })}
-          />
-          {errors.email && (
-            <p className="mt-1 text-sm text-red-600">{errors.email.message}</p>
-          )}
-        </div>
+        <FormField
+          id="email"
+          label="Email address"
+          type="email"
+          error={errors.email?.message}
+          registration={register("email", VALIDATION_RULES.email)}
+        />
       </div>
 
       <div>
