@@ -4,13 +4,9 @@ import { AuthProvider } from "./contexts/AuthContext";
 import Layout from "./components/layout/Layout";
 import LandingPage from "./pages/LandingPage";
 import SearchPage from "./pages/SearchPage";
+import type { PropsWithChildren } from "react";
 
-// Protected Route component
-interface ProtectedRouteProps {
-  children: React.ReactNode;
-}
-
-function ProtectedRoute({ children }: ProtectedRouteProps) {
+function ProtectedRoute({ children }: PropsWithChildren) {
   const { isLoggedIn } = useAuth();
   const savedUserName = localStorage.getItem("userName");
 

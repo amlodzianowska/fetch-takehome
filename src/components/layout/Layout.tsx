@@ -1,13 +1,9 @@
-import { useState, type ReactNode } from "react";
+import { useState, type PropsWithChildren } from "react";
 import Header from "./Header";
 import Footer from "./Footer";
 import LoginModal from "../auth/LoginModal";
 
-interface LayoutProps {
-  children: ReactNode;
-}
-
-function Layout({ children }: LayoutProps) {
+function Layout({ children }: PropsWithChildren) {
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
   const openLoginModal = () => setIsLoginModalOpen(true);
   const closeLoginModal = () => {

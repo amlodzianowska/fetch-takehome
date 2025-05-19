@@ -1,9 +1,9 @@
-import React from "react";
+import type { ReactNode } from "react";
 import NewsletterForm from "./NewsletterForm";
 
 interface FooterLinkProps {
   href: string;
-  children: React.ReactNode;
+  children: ReactNode;
 }
 
 function FooterLink({ href, children }: FooterLinkProps) {
