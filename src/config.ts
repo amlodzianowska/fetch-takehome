@@ -2,7 +2,6 @@ const API_URL =
   import.meta.env.VITE_API_URL ||
   "https://frontend-take-home-service.fetch.com";
 
-
 const config = {
   api: {
     baseUrl: API_URL,
@@ -11,7 +10,11 @@ const config = {
         login: "/auth/login",
         logout: "/auth/logout",
       },
-      breeds: "/dogs/breeds",
+      dogs: {
+        breeds: "/dogs/breeds",
+        search: "/dogs/search",
+        byIds: "/dogs",
+      },
     },
   },
 };
