@@ -13,8 +13,10 @@ interface DogSearchResults {
 }
 
 const dogService = {
+  endpoints: config.api.endpoints.dogs,
+
   getBreeds: async (): Promise<string[]> => {
-    const response = await fetch(getApiUrl(config.api.endpoints.dogs.breeds), {
+    const response = await fetch(getApiUrl(dogService.endpoints.breeds), {
       credentials: "include",
     });
 
@@ -31,7 +33,7 @@ const dogService = {
     const size = params.size || 5;
 
     const response = await fetch(
-      getApiUrl(`${config.api.endpoints.dogs.search}?size=${size}`),
+      getApiUrl(`${dogService.endpoints.search}?size=${size}`),
       { credentials: "include" }
     );
 
@@ -47,7 +49,7 @@ const dogService = {
       return [];
     }
 
-    const response = await fetch(getApiUrl(config.api.endpoints.dogs.byIds), {
+    const response = await fetch(getApiUrl(dogService.endpoints.byIds), {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
