@@ -5,6 +5,7 @@ import React, {
   useEffect,
   useCallback,
 } from "react";
+import config, { getApiUrl } from "../config";
 import type { PropsWithChildren } from "react";
 
 interface AuthContextType {
@@ -38,16 +39,15 @@ export function AuthProvider({ children }: PropsWithChildren) {
   const login = useCallback(async (name: string, email: string) => {
     try {
       const response = await fetch(
-        "https://frontend-take-home-service.fetch.com/auth/login",
+        getApiUrl(config.api.endpoints.auth.login), 
         {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ name, email }),
-          credentials: "include",
-        }
-      );
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ name, email }),
+        credentials: "include",
+      });
 
       if (!response.ok) {
         let errorMessage = `Login failed with status: ${response.status}`;
@@ -74,7 +74,7 @@ export function AuthProvider({ children }: PropsWithChildren) {
       console.log("Attempting logout");
 
       const response = await fetch(
-        "https://frontend-take-home-service.fetch.com/auth/logout",
+        getApiUrl(config.api.endpoints.auth.logout),
         {
           method: "POST",
           credentials: "include",
@@ -101,12 +101,9 @@ export function AuthProvider({ children }: PropsWithChildren) {
 
       if (savedUserName) {
         try {
-          const response = await fetch(
-            "https://frontend-take-home-service.fetch.com/dogs/breeds",
-            {
-              credentials: "include",
-            }
-          );
+          const response = await fetch(getApiUrl(config.api.endpoints.breeds), {
+            credentials: "include",
+          });
 
           if (response.ok) {
             setUserName(savedUserName);
