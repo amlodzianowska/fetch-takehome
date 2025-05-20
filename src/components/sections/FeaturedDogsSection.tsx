@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import type { Dog } from "../../types";
 import { featuredDogs } from "../../data/dogData";
+import DogCard from "./DogCard";
 
 interface FeaturedDogsProps {
   limit?: number;
@@ -47,29 +48,7 @@ function FeaturedDogsSection({
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {dogs.map((dog) => (
-              <div
-                key={dog.id}
-                className="bg-white rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-shadow"
-              >
-                <img
-                  src={dog.img}
-                  alt={dog.name}
-                  className="w-full h-48 object-cover"
-                />
-                <div className="p-4">
-                  <h3 className="text-xl font-semibold mb-1">{dog.name}</h3>
-                  <p className="text-gray-600 mb-2">
-                    {dog.breed} • {dog.age} {dog.age === 1 ? "year" : "years"}{" "}
-                    old
-                  </p>
-                  <button
-                    onClick={() => navigate(`/dog/${dog.id}`)}
-                    className="text-primary-500 hover:text-primary-600 font-medium text-sm"
-                  >
-                    Meet {dog.name} →
-                  </button>
-                </div>
-              </div>
+              <DogCard key={dog.id} dog={dog} />
             ))}
           </div>
         )}
