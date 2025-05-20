@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import type { Dog } from "../../types";
 import { featuredDogs } from "../../data/dogData";
 import DogCard from "./DogCard";
+import Spinner from "../common/Spinner";
 
 interface FeaturedDogsProps {
   limit?: number;
@@ -42,9 +43,7 @@ function FeaturedDogsSection({
         </div>
 
         {loading ? (
-          <div className="flex justify-center py-12">
-            <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary-500"></div>
-          </div>
+          <Spinner />
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {dogs.map((dog) => (
