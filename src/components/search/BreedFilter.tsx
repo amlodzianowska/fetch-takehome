@@ -182,7 +182,7 @@ function BreedFilter({ selectedBreeds, onBreedsChange }: BreedFilterProps) {
 
       {isExpanded && (
         <>
-          <div className="absolute z-30 mt-2  bg-white rounded-md shadow-lg border ">
+          <div className="absolute z-30 mt-2 bg-white rounded-md shadow-lg border ">
             <div className="p-3">
               <div className="mb-3">
                 <div className="relative">
