@@ -22,3 +22,11 @@ A web application for browsing and matching adoptable shelter dogs. Users can lo
 npm install
 npm run dev
 ```
+
+This project uses environment variables for configuration. Set up your environment by copying the example file:
+
+```bash
+cp .env.example .env
+```
+
+The default API URL should work for most development purposes. Environment files (.env, .env.production) are excluded from version control for security best practices.
