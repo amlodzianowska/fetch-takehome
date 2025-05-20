@@ -4,6 +4,7 @@ import { useAuth } from "../contexts/AuthContext";
 import dogService from "../services/dogService";
 import type { Dog } from "../types";
 import DogCard from "../components/sections/DogCard";
+import Spinner from "../components/common/Spinner";
 
 function SearchPage() {
   const navigate = useNavigate();
@@ -56,9 +57,7 @@ function SearchPage() {
 
         <div className="bg-white rounded-lg shadow-md p-6">
           {loading ? (
-            <div className="flex justify-center items-center h-64">
-              <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary-500"></div>
-            </div>
+            <Spinner />
           ) : error ? (
             <div className="text-center text-red-500 p-4">{error}</div>
           ) : dogs.length > 0 ? (
