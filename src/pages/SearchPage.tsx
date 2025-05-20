@@ -2,9 +2,11 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
 import dogService from "../services/dogService";
+import type { DogSearchParams } from "../services/dogService";
 import type { Dog } from "../types";
 import DogCard from "../components/sections/DogCard";
 import Spinner from "../components/common/Spinner";
+import BreedFilter from "../components/search/BreedFilter";
 
 function SearchPage() {
   const navigate = useNavigate();
@@ -13,6 +15,7 @@ function SearchPage() {
   const [loading, setLoading] = useState(true);
   const [dogs, setDogs] = useState<Dog[]>([]);
   const [error, setError] = useState<string | null>(null);
+  const [selectedBreeds, setSelectedBreeds] = useState<string[]>([]);
 
   useEffect(() => {
     const fetchDogs = async () => {
@@ -20,7 +23,15 @@ function SearchPage() {
       setError(null);
 
       try {
-        const results = await dogService.searchDogs();
+        const searchParams: DogSearchParams = {
+          size: 100,
+        };
+
+        if (selectedBreeds.length > 0) {
+          searchParams.breeds = selectedBreeds;
+        }
+
+        const results = await dogService.searchDogs(searchParams);
 
         if (results.resultIds.length > 0) {
           const dogsData = await dogService.getDogsByIds(results.resultIds);
@@ -40,7 +51,7 @@ function SearchPage() {
     if (isLoggedIn) {
       fetchDogs();
     }
-  }, [isLoggedIn]);
+  }, [isLoggedIn, selectedBreeds]);
 
   useEffect(() => {
     if (!isLoggedIn) {
@@ -48,12 +59,27 @@ function SearchPage() {
     }
   }, [isLoggedIn, navigate]);
 
+  const handleBreedsChange = (breeds: string[]) => {
+    setSelectedBreeds(breeds);
+  };
+
   return (
     <div className="min-h-screen bg-gray-50 pt-24 pb-16">
       <div className="container mx-auto px-4">
         <h1 className="text-3xl font-bold text-gray-800 mb-8">
           Find Your New Best Friend
         </h1>
+
+        <div className="flex flex-col md:flex-row mb-8">
+          <div className="w-full md:w-1/4">
+            <div className="bg-white rounded-lg shadow-md p-4">
+              <BreedFilter
+                selectedBreeds={selectedBreeds}
+                onBreedsChange={handleBreedsChange}
+              />
+            </div>
+          </div>
+        </div>
 
         <div className="bg-white rounded-lg shadow-md p-6">
           {loading ? (
