@@ -1,8 +1,11 @@
 import config, { getApiUrl } from "../config";
 import type { Dog } from "../types";
 
-interface DogSearchParams {
+export interface DogSearchParams {
   size?: number;
+  breeds?: string[];
+  sort?: string;
+  from?: string;
 }
 
 interface DogSearchResults {
@@ -30,10 +33,26 @@ const dogService = {
   searchDogs: async (
     params: DogSearchParams = {}
   ): Promise<DogSearchResults> => {
-    const size = params.size || 5;
+    const size = params.size || 100;
+
+    const queryParams = new URLSearchParams();
+
+    queryParams.append("size", size.toString());
+
+    queryParams.append("sort", params.sort || "breed:asc");
+
+    if (params.from) {
+      queryParams.append("from", params.from);
+    }
+
+    if (params.breeds && params.breeds.length > 0) {
+      params.breeds.forEach((breed) => {
+        queryParams.append("breeds", breed);
+      });
+    }
 
     const response = await fetch(
-      getApiUrl(`${dogService.endpoints.search}?size=${size}`),
+      getApiUrl(`${dogService.endpoints.search}?${queryParams.toString()}`),
       { credentials: "include" }
     );
 
