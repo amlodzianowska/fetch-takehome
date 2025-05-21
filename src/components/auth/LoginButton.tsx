@@ -29,7 +29,7 @@ function LoginButton({
     secondary:
       "bg-white text-primary-500 hover:bg-gray-50 border border-primary-500 focus:ring-primary-500",
     outline:
-      "bg-transparent border-2 border-white hover:bg-white hover:text-primary-800 text-white focus:ring-white",
+      "bg-transparent border-2 border-primary-500 hover:bg-text-primary-500 hover:text-primary-300 text-primary-500 focus:ring-white",
   };
 
   const sizeStyles = {
