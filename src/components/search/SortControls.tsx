@@ -50,7 +50,7 @@ function SortControls({ currentSort, onSortChange }: SortControlsProps) {
   };
 
   return (
-    <div className="relative" ref={dropdownRef}>
+    <div className="relative mb-8" ref={dropdownRef}>
       <button
         onClick={toggleDropdown}
         className={`

@@ -27,7 +27,7 @@ function SearchPage() {
       try {
         const searchParams: DogSearchParams = {
           size: 100,
-          sort: currentSort, // Include sort parameter
+          sort: currentSort,
         };
 
         if (selectedBreeds.length > 0) {
@@ -77,7 +77,7 @@ function SearchPage() {
           Find Your New Best Friend
         </h1>
 
-        <div className="flex flex-col md:flex-row mb-8">
+        <div className="flex flex-col md:flex-row mb-4">
           <div className="w-full md:w-1/4">
             <div className="bg-white rounded-lg shadow-md p-4">
               <BreedFilter
