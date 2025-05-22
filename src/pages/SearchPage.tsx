@@ -6,9 +6,8 @@ import type { DogSearchParams } from "../services/dogService";
 import type { Dog } from "../types";
 import DogCard from "../components/sections/DogCard";
 import Spinner from "../components/common/Spinner";
-import BreedFilter from "../components/search/BreedFilter";
-import SortControls from "../components/search/SortControls";
 import SearchBar from "../components/search/SearchBar";
+import SortControls from "../components/search/SortControls";
 
 function SearchPage() {
   const navigate = useNavigate();
