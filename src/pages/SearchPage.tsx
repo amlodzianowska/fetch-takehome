@@ -8,6 +8,7 @@ import DogCard from "../components/sections/DogCard";
 import Spinner from "../components/common/Spinner";
 import BreedFilter from "../components/search/BreedFilter";
 import SortControls from "../components/search/SortControls";
+import SearchBar from "../components/search/SearchBar";
 
 function SearchPage() {
   const navigate = useNavigate();
@@ -77,16 +78,10 @@ function SearchPage() {
           Find Your New Best Friend
         </h1>
 
-        <div className="flex flex-col md:flex-row mb-4">
-          <div className="w-full md:w-1/4">
-            <div className="bg-white rounded-lg shadow-md p-4">
-              <BreedFilter
-                selectedBreeds={selectedBreeds}
-                onBreedsChange={handleBreedsChange}
-              />
-            </div>
-          </div>
-        </div>
+        <SearchBar
+          selectedBreeds={selectedBreeds}
+          onBreedsChange={handleBreedsChange}
+        />
 
         <SortControls
           currentSort={currentSort}

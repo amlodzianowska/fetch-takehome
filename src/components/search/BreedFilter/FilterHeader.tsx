@@ -9,7 +9,7 @@ function FilterHeader({
 }: FilterHeaderProps) {
   return (
     <div
-      className={`flex justify-between items-center cursor-pointer`}
+      className="flex justify-between items-center cursor-pointer p-4 border border-gray-200 bg-white hover:bg-gray-50 transition-colors duration-200"
       onClick={onToggle}
     >
       <h3 className="font-semibold text-gray-700">{title}</h3>
