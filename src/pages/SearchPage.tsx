@@ -7,6 +7,7 @@ import type { Dog } from "../types";
 import DogCard from "../components/sections/DogCard";
 import Spinner from "../components/common/Spinner";
 import BreedFilter from "../components/search/BreedFilter";
+import SortControls from "../components/search/SortControls";
 
 function SearchPage() {
   const navigate = useNavigate();
@@ -16,6 +17,7 @@ function SearchPage() {
   const [dogs, setDogs] = useState<Dog[]>([]);
   const [error, setError] = useState<string | null>(null);
   const [selectedBreeds, setSelectedBreeds] = useState<string[]>([]);
+  const [currentSort, setCurrentSort] = useState<string>("breed:asc");
 
   useEffect(() => {
     const fetchDogs = async () => {
@@ -25,6 +27,7 @@ function SearchPage() {
       try {
         const searchParams: DogSearchParams = {
           size: 100,
+          sort: currentSort,
         };
 
         if (selectedBreeds.length > 0) {
@@ -51,7 +54,7 @@ function SearchPage() {
     if (isLoggedIn) {
       fetchDogs();
     }
-  }, [isLoggedIn, selectedBreeds]);
+  }, [isLoggedIn, selectedBreeds, currentSort]);
 
   useEffect(() => {
     if (!isLoggedIn) {
@@ -63,6 +66,10 @@ function SearchPage() {
     setSelectedBreeds(breeds);
   };
 
+  const handleSortChange = (sort: string) => {
+    setCurrentSort(sort);
+  };
+
   return (
     <div className="min-h-screen bg-gray-50 pt-24 pb-16">
       <div className="container mx-auto px-4">
@@ -70,7 +77,7 @@ function SearchPage() {
           Find Your New Best Friend
         </h1>
 
-        <div className="flex flex-col md:flex-row mb-8">
+        <div className="flex flex-col md:flex-row mb-4">
           <div className="w-full md:w-1/4">
             <div className="bg-white rounded-lg shadow-md p-4">
               <BreedFilter
@@ -80,6 +87,11 @@ function SearchPage() {
             </div>
           </div>
         </div>
+
+        <SortControls
+          currentSort={currentSort}
+          onSortChange={handleSortChange}
+        />
 
         <div className="bg-white rounded-lg shadow-md p-6">
           {loading ? (
