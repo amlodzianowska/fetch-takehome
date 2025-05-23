@@ -8,16 +8,24 @@ import DogCard from "../components/sections/DogCard";
 import Spinner from "../components/common/Spinner";
 import SearchBar from "../components/search/SearchBar";
 import SortControls from "../components/search/SortControls";
+import { getApiUrl } from "../config";
+import LoadMoreSection from "../components/search/searchSections/LoadMoreButton";
+import LoadMoreButton from "../components/search/searchSections/LoadMoreButton";
 
 function SearchPage() {
   const navigate = useNavigate();
   const { isLoggedIn } = useAuth();
 
   const [loading, setLoading] = useState(true);
-  const [dogs, setDogs] = useState<Dog[]>([]);
+  const [displayedDogs, setDisplayedDogs] = useState<Dog[]>([]);
   const [error, setError] = useState<string | null>(null);
   const [selectedBreeds, setSelectedBreeds] = useState<string[]>([]);
   const [currentSort, setCurrentSort] = useState<string>("breed:asc");
+
+  const [nextCursor, setNextCursor] = useState<string | null>(null);
+  const [matchingDogCount, setMatchingDogCount] = useState<number>(0);
+  const [hasMore, setHasMore] = useState(false);
+  const [isLoadingMore, setIsLoadingMore] = useState(false);
 
   useEffect(() => {
     const fetchDogs = async () => {
@@ -26,7 +34,7 @@ function SearchPage() {
 
       try {
         const searchParams: DogSearchParams = {
-          size: 100,
+          size: 24,
           sort: currentSort,
         };
 
@@ -35,17 +43,21 @@ function SearchPage() {
         }
 
         const results = await dogService.searchDogs(searchParams);
+        setMatchingDogCount(results.total);
+        setNextCursor(results.next || null);
+        setHasMore(!!results.next);
 
         if (results.resultIds.length > 0) {
           const dogsData = await dogService.getDogsByIds(results.resultIds);
-          setDogs(dogsData);
+          setDisplayedDogs(dogsData);
         } else {
-          setDogs([]);
+          setDisplayedDogs([]);
         }
       } catch (error) {
         console.error("Error fetching dogs:", error);
         setError("Failed to fetch dogs. Please try again.");
-        setDogs([]);
+        setDisplayedDogs([]);
+        setHasMore(false);
       } finally {
         setLoading(false);
       }
@@ -56,6 +68,47 @@ function SearchPage() {
     }
   }, [isLoggedIn, selectedBreeds, currentSort]);
 
+  const loadMoreDogs = async () => {
+    if (!hasMore || !nextCursor || isLoadingMore) return;
+
+    setIsLoadingMore(true);
+    setError(null);
+
+    try {
+      const url = new URL(getApiUrl(nextCursor));
+      const fromParam = url.searchParams.get("from");
+
+      const searchParams: DogSearchParams = {
+        size: 25,
+        sort: currentSort,
+        from: fromParam || undefined,
+      };
+
+      if (selectedBreeds.length > 0) {
+        searchParams.breeds = selectedBreeds;
+      }
+
+      const results = await dogService.searchDogs(searchParams);
+
+      setNextCursor(results.next || null);
+      setHasMore(!!results.next);
+
+      if (results.total > 0) {
+        const newDogData = await dogService.getDogsByIds(results.resultIds);
+        setDisplayedDogs((prevDogs) => [...prevDogs, ...newDogData]);
+      } else {
+        setDisplayedDogs([]);
+      }
+    } catch (error) {
+      console.error("Error fetching dogs:", error);
+      setError("Failed to fetch dogs. Please try again.");
+      setDisplayedDogs([]);
+      setHasMore(false);
+    } finally {
+      setIsLoadingMore(false);
+    }
+  };
+
   useEffect(() => {
     if (!isLoggedIn) {
       navigate("/");
@@ -64,10 +117,16 @@ function SearchPage() {
 
   const handleBreedsChange = (breeds: string[]) => {
     setSelectedBreeds(breeds);
+    setDisplayedDogs([]);
+    setNextCursor(null);
+    setHasMore(true);
   };
 
   const handleSortChange = (sort: string) => {
     setCurrentSort(sort);
+    setDisplayedDogs([]);
+    setNextCursor(null);
+    setHasMore(true);
   };
 
   return (
@@ -92,9 +151,9 @@ function SearchPage() {
             <Spinner />
           ) : error ? (
             <div className="text-center text-red-500 p-4">{error}</div>
-          ) : dogs.length > 0 ? (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-              {dogs.map((dog) => (
+          ) : displayedDogs.length > 0 ? (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+              {displayedDogs.map((dog) => (
                 <DogCard key={dog.id} dog={dog} />
               ))}
             </div>
@@ -104,6 +163,16 @@ function SearchPage() {
             </div>
           )}
         </div>
+
+        {hasMore && (
+          <div className="mt-12 text-center">
+            <LoadMoreButton
+              loadMoreDogs={loadMoreDogs}
+              isLoadingMore={isLoadingMore}
+              remainingDogs={matchingDogCount - displayedDogs.length}
+            />
+          </div>
+        )}
       </div>
     </div>
   );
