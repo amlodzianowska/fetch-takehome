@@ -3,7 +3,6 @@ import { useForm } from "react-hook-form";
 import type { SubmitHandler, UseFormRegisterReturn } from "react-hook-form";
 import { useAuth } from "../../contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
-import Spinner from "../common/Spinner";
 
 interface LoginInputs {
   name: string;
@@ -65,6 +64,14 @@ const VALIDATION_RULES = {
   },
 };
 
+function LoginSpinner() {
+  return (
+    <div className="flex justify-center items-center py-1">
+      <div className="animate-spin rounded-full h-4 w-4 border-2 border-white border-t-transparent"></div>
+    </div>
+  );
+}
+
 function LoginForm({ onSuccess }: LoginFormProps) {
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -82,23 +89,18 @@ function LoginForm({ onSuccess }: LoginFormProps) {
     setError(null);
 
     try {
-      // Call the login function from AuthContext
       await login(data.name, data.email);
 
-      console.log("Login successful, calling onSuccess callback if provided");
-
-      // This should close the modal
       if (onSuccess) {
         onSuccess();
       }
 
-      // Navigate to search page
       navigate("/search");
     } catch (err) {
       console.error("Login failed", err);
       setError("Login failed. Please check your credentials and try again.");
     } finally {
-      setIsLoading(false);
+      setIsLoading(true);
     }
   };
 
@@ -140,13 +142,7 @@ function LoginForm({ onSuccess }: LoginFormProps) {
               : "bg-primary-500 hover:bg-primary-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500"
           }`}
         >
-          {isLoading ? (
-            <>
-              <Spinner />
-            </>
-          ) : (
-            "Sign in"
-          )}
+          {isLoading ? <LoginSpinner /> : "Sign in"}
         </button>
       </div>
     </form>
