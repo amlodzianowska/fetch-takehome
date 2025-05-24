@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
 import { useSearch } from "../hooks/useSearch";
 import DogCard from "../components/sections/DogCard";
-import Spinner from "../components/common/Spinner";
+import Spinner from "../components/ui/Spinner";
 import SearchBar from "../components/search/SearchBar";
 import SortControls from "../components/search/SortControls";
 import LoadMoreButton from "../components/search/searchSections/LoadMoreButton";

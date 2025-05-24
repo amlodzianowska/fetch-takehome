@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import type { Dog } from "../../types";
 import { featuredDogs } from "../../data/dogData";
 import DogCard from "./DogCard";
-import Spinner from "../common/Spinner";
+import Spinner from "../ui/Spinner";
 
 interface FeaturedDogsProps {
   limit?: number;
