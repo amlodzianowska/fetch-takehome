@@ -1,4 +1,5 @@
 import type { Dog } from "../../types";
+import Card from "../ui/Card";
 
 interface DogCardProps {
   dog: Dog;
@@ -6,7 +7,7 @@ interface DogCardProps {
 
 function DogCard({ dog }: DogCardProps) {
   return (
-    <div className="bg-white rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-shadow">
+    <Card>
       <img src={dog.img} alt={dog.name} className="w-full h-48 object-cover" />
       <div className="p-4">
         <h3 className="text-xl font-semibold mb-1">{dog.name}</h3>
@@ -15,7 +16,7 @@ function DogCard({ dog }: DogCardProps) {
         </p>
         <p className="text-gray-500 text-sm mb-2">Location: {dog.zip_code}</p>
       </div>
-    </div>
+    </Card>
   );
 }
 
