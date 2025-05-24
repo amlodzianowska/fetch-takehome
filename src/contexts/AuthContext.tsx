@@ -38,9 +38,7 @@ export function AuthProvider({ children }: PropsWithChildren) {
 
   const login = useCallback(async (name: string, email: string) => {
     try {
-      const response = await fetch(
-        getApiUrl(config.api.endpoints.auth.login), 
-        {
+      const response = await fetch(getApiUrl(config.api.endpoints.auth.login), {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -101,9 +99,12 @@ export function AuthProvider({ children }: PropsWithChildren) {
 
       if (savedUserName) {
         try {
-          const response = await fetch(getApiUrl(config.api.endpoints.breeds), {
-            credentials: "include",
-          });
+          const response = await fetch(
+            getApiUrl(config.api.endpoints.dogs.breeds),
+            {
+              credentials: "include",
+            }
+          );
 
           if (response.ok) {
             setUserName(savedUserName);
