@@ -6,6 +6,7 @@ import DogCard from "../components/dogs/DogCard";
 import Spinner from "../components/ui/Spinner";
 import SearchBar from "../components/search/SearchBar";
 import SortControls from "../components/search/SortControls";
+import PageSizeSelector from "../components/search/PageSizeSelector";
 import LoadMoreButton from "../components/search/LoadMoreButton";
 
 function SearchPage() {
@@ -22,8 +23,10 @@ function SearchPage() {
     loadMoreDogs,
     selectedBreeds,
     currentSort,
+    currentPageSize,
     setSelectedBreeds,
     setCurrentSort,
+    setCurrentPageSize,
   } = useSearch({
     initialSize: 24,
     initialSort: "breed:asc",
@@ -51,7 +54,25 @@ function SearchPage() {
           onBreedsChange={setSelectedBreeds}
         />
 
-        <SortControls currentSort={currentSort} onSortChange={setCurrentSort} />
+        <div className="flex justify-between items-center mb-8">
+          <SortControls
+            currentSort={currentSort}
+            onSortChange={setCurrentSort}
+          />
+
+          <div className="flex items-center space-x-4">
+            <span className="text-sm text-gray-600">
+              {loading
+                ? "Loading..."
+                : `Showing ${displayedDogs.length} of ${matchingDogCount} dogs`}
+            </span>
+            <PageSizeSelector
+              currentPageSize={currentPageSize}
+              onPageSizeChange={setCurrentPageSize}
+              totalCount={matchingDogCount}
+            />
+          </div>
+        </div>
 
         <div className="bg-white rounded-lg shadow-md p-6">
           {loading ? (
