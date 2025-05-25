@@ -24,8 +24,10 @@ interface UseSearchReturn {
 
   selectedBreeds: string[];
   currentSort: string;
+  currentPageSize: number;
   setSelectedBreeds: (breeds: string[]) => void;
   setCurrentSort: (sort: string) => void;
+  setCurrentPageSize: (size: number) => void;
 }
 
 export function useSearch(options: UseSearchOptions = {}): UseSearchReturn {
@@ -38,6 +40,7 @@ export function useSearch(options: UseSearchOptions = {}): UseSearchReturn {
 
   const [selectedBreeds, setSelectedBreeds] = useState<string[]>([]);
   const [currentSort, setCurrentSort] = useState<string>(initialSort);
+  const [currentPageSize, setCurrentPageSize] = useState<number>(initialSize);
 
   const [nextCursor, setNextCursor] = useState<string | null>(null);
   const [matchingDogCount, setMatchingDogCount] = useState<number>(0);
@@ -55,7 +58,7 @@ export function useSearch(options: UseSearchOptions = {}): UseSearchReturn {
 
       try {
         const searchParams: DogSearchParams = {
-          size: isInitialSearch ? initialSize : 25,
+          size: currentPageSize,
           sort: currentSort,
         };
 
@@ -111,7 +114,7 @@ export function useSearch(options: UseSearchOptions = {}): UseSearchReturn {
         }
       }
     },
-    [selectedBreeds, currentSort, initialSize, nextCursor]
+    [selectedBreeds, currentSort, currentPageSize, nextCursor]
   );
 
   const loadMoreDogs = useCallback(async () => {
@@ -131,7 +134,7 @@ export function useSearch(options: UseSearchOptions = {}): UseSearchReturn {
 
   useEffect(() => {
     refreshSearch();
-  }, [selectedBreeds, currentSort]);
+  }, [selectedBreeds, currentSort, currentPageSize]);
 
   const handleSetSelectedBreeds = useCallback((breeds: string[]) => {
     setSelectedBreeds(breeds);
@@ -139,6 +142,10 @@ export function useSearch(options: UseSearchOptions = {}): UseSearchReturn {
 
   const handleSetCurrentSort = useCallback((sort: string) => {
     setCurrentSort(sort);
+  }, []);
+
+  const handleSetCurrentPageSize = useCallback((size: number) => {
+    setCurrentPageSize(size);
   }, []);
 
   return {
@@ -156,7 +163,9 @@ export function useSearch(options: UseSearchOptions = {}): UseSearchReturn {
 
     selectedBreeds,
     currentSort,
+    currentPageSize,
     setSelectedBreeds: handleSetSelectedBreeds,
     setCurrentSort: handleSetCurrentSort,
+    setCurrentPageSize: handleSetCurrentPageSize,
   };
 }

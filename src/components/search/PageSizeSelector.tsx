@@ -1,21 +1,24 @@
 import { useState, useRef, useEffect } from "react";
 import { ChevronDownIcon } from "@heroicons/react/24/outline";
 
-interface SortControlsProps {
-  currentSort: string;
-  onSortChange: (sort: string) => void;
+interface PageSizeSelectorProps {
+  currentPageSize: number;
+  onPageSizeChange: (size: number) => void;
+  totalCount: number;
 }
 
-const SORT_OPTIONS = [
-  { value: "breed:asc", label: "Breed (A-Z)" },
-  { value: "breed:desc", label: "Breed (Z-A)" },
-  { value: "name:asc", label: "Name (A-Z)" },
-  { value: "name:desc", label: "Name (Z-A)" },
-  { value: "age:asc", label: "Age (Youngest)" },
-  { value: "age:desc", label: "Age (Oldest)" },
+const PAGE_SIZE_OPTIONS = [
+  { value: 12, label: "12 per page" },
+  { value: 24, label: "24 per page" },
+  { value: 48, label: "48 per page" },
+  { value: 96, label: "96 per page" },
 ];
 
-function SortControls({ currentSort, onSortChange }: SortControlsProps) {
+function PageSizeSelector({
+  currentPageSize,
+  onPageSizeChange,
+  totalCount,
+}: PageSizeSelectorProps) {
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
@@ -36,12 +39,14 @@ function SortControls({ currentSort, onSortChange }: SortControlsProps) {
   }, []);
 
   const getCurrentLabel = () => {
-    const option = SORT_OPTIONS.find((opt) => opt.value === currentSort);
-    return option ? option.label : "Sort by";
+    const option = PAGE_SIZE_OPTIONS.find(
+      (opt) => opt.value === currentPageSize
+    );
+    return option ? option.label : `${currentPageSize} per page`;
   };
 
-  const handleOptionClick = (value: string) => {
-    onSortChange(value);
+  const handleOptionClick = (value: number) => {
+    onPageSizeChange(value);
     setIsOpen(false);
   };
 
@@ -54,7 +59,7 @@ function SortControls({ currentSort, onSortChange }: SortControlsProps) {
       <button
         onClick={toggleDropdown}
         className={`
-          inline-flex items-center px-4 py-2 rounded-full border text-sm font-medium
+          inline-flex items-center px-3 py-2 rounded-md border text-sm font-medium
           transition-all duration-200 min-w-0
           ${
             isOpen
@@ -63,7 +68,7 @@ function SortControls({ currentSort, onSortChange }: SortControlsProps) {
           }
         `}
       >
-        <span className="mr-2 truncate">Sort by: {getCurrentLabel()}</span>
+        <span className="mr-2 truncate">{getCurrentLabel()}</span>
         <ChevronDownIcon
           className={`h-4 w-4 transition-transform duration-200 flex-shrink-0 ${
             isOpen ? "transform rotate-180" : ""
@@ -72,28 +77,36 @@ function SortControls({ currentSort, onSortChange }: SortControlsProps) {
       </button>
 
       {isOpen && (
-        <div className="absolute top-full left-0 mt-2 w-56 bg-white rounded-lg shadow-lg border border-gray-200 z-50">
-          <div className="py-2">
+        <div className="absolute top-full right-0 mt-2 w-40 bg-white rounded-md shadow-lg border border-gray-200 z-50">
+          <div className="py-1">
             <div className="px-3 py-2 text-xs font-semibold text-gray-500 uppercase tracking-wide border-b border-gray-100">
-              Sort Options
+              Show
             </div>
-            {SORT_OPTIONS.map((option) => (
+            {PAGE_SIZE_OPTIONS.map((option) => (
               <button
                 key={option.value}
                 onClick={() => handleOptionClick(option.value)}
+                disabled={option.value > totalCount && totalCount > 0}
                 className={`
-                  w-full text-left px-4 py-3 text-sm transition-colors duration-150
+                  w-full text-left px-3 py-2 text-sm transition-colors duration-150
                   ${
-                    currentSort === option.value
+                    currentPageSize === option.value
                       ? "bg-primary-50 text-primary-700 font-medium"
+                      : option.value > totalCount && totalCount > 0
+                      ? "text-gray-400 cursor-not-allowed"
                       : "text-gray-700 hover:bg-gray-50"
                   }
                 `}
               >
                 <div className="flex items-center justify-between">
                   <span>{option.label}</span>
-                  {currentSort === option.value && (
+                  {currentPageSize === option.value && (
                     <div className="w-2 h-2 bg-primary-500 rounded-full"></div>
+                  )}
+                  {option.value > totalCount && totalCount > 0 && (
+                    <span className="text-xs text-gray-400">
+                      (only {totalCount})
+                    </span>
                   )}
                 </div>
               </button>
@@ -105,4 +118,4 @@ function SortControls({ currentSort, onSortChange }: SortControlsProps) {
   );
 }
 
-export default SortControls;
+export default PageSizeSelector;
