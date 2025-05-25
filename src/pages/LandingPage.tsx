@@ -1,6 +1,6 @@
-import Hero from "../components/sections/Hero";
-import HowItWorks from "../components/sections/HowItWorks";
-import FeaturedDogsSection from "../components/sections/FeaturedDogsSection";
+import Hero from "../components/ui/Hero";
+import HowItWorks from "../components/ui/HowItWorks";
+import FeaturedDogsSection from "../components/dogs/FeaturedDogsSection";
 
 function LandingPage() {
   return (
