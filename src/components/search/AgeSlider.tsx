@@ -11,8 +11,6 @@ function AgeSlider({ minAge, maxAge, onAgeChange }: AgeSliderProps) {
   const [displayMax, setDisplayMax] = useState(maxAge);
   const timeoutRef = useRef<number | undefined>(undefined);
 
-  const formatAge = (age: number) => (age >= 15 ? "15+" : age.toString());
-
   const applyChanges = useCallback(() => {
     onAgeChange(displayMin, displayMax);
   }, [displayMin, displayMax, onAgeChange]);
@@ -39,7 +37,6 @@ function AgeSlider({ minAge, maxAge, onAgeChange }: AgeSliderProps) {
     applyChanges();
   };
 
-  // Calculate percentages for the active range
   const minPercent = (displayMin / 15) * 100;
   const maxPercent = (displayMax / 15) * 100;
 
@@ -47,20 +44,16 @@ function AgeSlider({ minAge, maxAge, onAgeChange }: AgeSliderProps) {
     <div className="bg-white border border-gray-200 rounded-lg p-4">
       <h3 className="font-semibold text-gray-700 mb-4">Age Range</h3>
 
-      <div className="relative mb-6">
-        {/* Background track */}
-        <div className="absolute top-1/2 left-0 right-0 h-2 bg-gray-200 rounded-lg transform -translate-y-1/2"></div>
-
-        {/* Active range track */}
+      <div className="relative mb-8">
+        <div className="absolute top-1/2 left-0 right-0 h-2 bg-gray-200 rounded-lg transform"></div>
         <div
-          className="absolute top-1/2 h-2 bg-primary-500 rounded-lg transform -translate-y-1/2"
+          className="absolute top-1/2 h-2 bg-primary-500 rounded-lg transform"
           style={{
             left: `${minPercent}%`,
             width: `${maxPercent - minPercent}%`,
           }}
         ></div>
 
-        {/* Min range slider */}
         <input
           type="range"
           min="0"
@@ -124,7 +117,7 @@ function AgeSlider({ minAge, maxAge, onAgeChange }: AgeSliderProps) {
         />
       </div>
 
-      <div className="flex justify-between items-center mb-3">
+      <div className="flex justify-between items-center">
         <div className="text-sm">
           <span className="font-medium text-primary-600">0</span>
         </div>
