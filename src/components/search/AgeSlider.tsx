@@ -1,5 +1,6 @@
 import Slider from "rc-slider";
 import "rc-slider/assets/index.css";
+import { useState } from "react";
 
 interface AgeSliderProps {
   minAge: number;
@@ -8,9 +9,13 @@ interface AgeSliderProps {
 }
 
 function AgeSlider({ minAge, maxAge, onAgeChange }: AgeSliderProps) {
+  const [range, setRange] = useState("All Ages");
+
   return (
-    <div className="bg-white border border-gray-200 rounded-md p-4">
-      <h3 className="font-semibold text-gray-700 mb-4">Age Range</h3>
+    <div>
+      <h3 className="font-semibold text-gray-700 mb-2">
+        Age Range <span className="font-extralight">({range})</span>
+      </h3>
       <Slider
         range
         min={0}
@@ -19,6 +24,13 @@ function AgeSlider({ minAge, maxAge, onAgeChange }: AgeSliderProps) {
         onChangeComplete={(value: number | number[]) => {
           const [min, max] = Array.isArray(value) ? value : [value, value];
           onAgeChange(min, max);
+          setRange(
+            min === 0 && max === 15
+              ? "All Ages"
+              : max === 15
+              ? `${min} - 15+`
+              : `${min} - ${max}`
+          );
         }}
         className="mb-4 color-primary"
         styles={{
