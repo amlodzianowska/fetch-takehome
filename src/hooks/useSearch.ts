@@ -25,9 +25,12 @@ interface UseSearchReturn {
   selectedBreeds: string[];
   currentSort: string;
   currentPageSize: number;
+  minAge: number;
+  maxAge: number;
   setSelectedBreeds: (breeds: string[]) => void;
   setCurrentSort: (sort: string) => void;
   setCurrentPageSize: (size: number) => void;
+  setAgeRange: (minAge: number, maxAge: number) => void;
 }
 
 export function useSearch(options: UseSearchOptions = {}): UseSearchReturn {
@@ -41,6 +44,8 @@ export function useSearch(options: UseSearchOptions = {}): UseSearchReturn {
   const [selectedBreeds, setSelectedBreeds] = useState<string[]>([]);
   const [currentSort, setCurrentSort] = useState<string>(initialSort);
   const [currentPageSize, setCurrentPageSize] = useState<number>(initialSize);
+  const [minAge, setMinAge] = useState<number>(0);
+  const [maxAge, setMaxAge] = useState<number>(15);
 
   const [nextCursor, setNextCursor] = useState<string | null>(null);
   const [matchingDogCount, setMatchingDogCount] = useState<number>(0);
@@ -58,12 +63,20 @@ export function useSearch(options: UseSearchOptions = {}): UseSearchReturn {
 
       try {
         const searchParams: DogSearchParams = {
-          size: currentPageSize,
+          size: isInitialSearch ? currentPageSize : 25,
           sort: currentSort,
         };
 
         if (selectedBreeds.length > 0) {
           searchParams.breeds = selectedBreeds;
+        }
+
+        if (minAge > 0) {
+          searchParams.ageMin = minAge;
+        }
+
+        if (maxAge < 15) {
+          searchParams.ageMax = maxAge;
         }
 
         if (!isInitialSearch && nextCursor) {
@@ -114,7 +127,7 @@ export function useSearch(options: UseSearchOptions = {}): UseSearchReturn {
         }
       }
     },
-    [selectedBreeds, currentSort, currentPageSize, nextCursor]
+    [selectedBreeds, currentSort, currentPageSize, minAge, maxAge, nextCursor]
   );
 
   const loadMoreDogs = useCallback(async () => {
@@ -134,7 +147,7 @@ export function useSearch(options: UseSearchOptions = {}): UseSearchReturn {
 
   useEffect(() => {
     refreshSearch();
-  }, [selectedBreeds, currentSort, currentPageSize]);
+  }, [selectedBreeds, currentSort, currentPageSize, minAge, maxAge]);
 
   const handleSetSelectedBreeds = useCallback((breeds: string[]) => {
     setSelectedBreeds(breeds);
@@ -146,6 +159,11 @@ export function useSearch(options: UseSearchOptions = {}): UseSearchReturn {
 
   const handleSetCurrentPageSize = useCallback((size: number) => {
     setCurrentPageSize(size);
+  }, []);
+
+  const handleSetAgeRange = useCallback((min: number, max: number) => {
+    setMinAge(min);
+    setMaxAge(max);
   }, []);
 
   return {
@@ -164,8 +182,11 @@ export function useSearch(options: UseSearchOptions = {}): UseSearchReturn {
     selectedBreeds,
     currentSort,
     currentPageSize,
+    minAge,
+    maxAge,
     setSelectedBreeds: handleSetSelectedBreeds,
     setCurrentSort: handleSetCurrentSort,
     setCurrentPageSize: handleSetCurrentPageSize,
+    setAgeRange: handleSetAgeRange,
   };
 }

@@ -6,6 +6,8 @@ export interface DogSearchParams {
   breeds?: string[];
   sort?: string;
   from?: string;
+  ageMin?: number;
+  ageMax?: number;
 }
 
 interface DogSearchResults {
@@ -36,9 +38,7 @@ const dogService = {
     const size = params.size || 100;
 
     const queryParams = new URLSearchParams();
-
     queryParams.append("size", size.toString());
-
     queryParams.append("sort", params.sort || "breed:asc");
 
     if (params.from) {
@@ -49,6 +49,15 @@ const dogService = {
       params.breeds.forEach((breed) => {
         queryParams.append("breeds", breed);
       });
+    }
+
+    // Add age filtering
+    if (params.ageMin !== undefined && params.ageMin > 0) {
+      queryParams.append("ageMin", params.ageMin.toString());
+    }
+
+    if (params.ageMax !== undefined && params.ageMax < 15) {
+      queryParams.append("ageMax", params.ageMax.toString());
     }
 
     const response = await fetch(

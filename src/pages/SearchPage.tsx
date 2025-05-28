@@ -24,9 +24,12 @@ function SearchPage() {
     selectedBreeds,
     currentSort,
     currentPageSize,
+    minAge,
+    maxAge,
     setSelectedBreeds,
     setCurrentSort,
     setCurrentPageSize,
+    setAgeRange,
   } = useSearch({
     initialSize: 24,
     initialSort: "breed:asc",
@@ -52,6 +55,9 @@ function SearchPage() {
         <SearchBar
           selectedBreeds={selectedBreeds}
           onBreedsChange={setSelectedBreeds}
+          minAge={minAge}
+          maxAge={maxAge}
+          onAgeChange={setAgeRange}
         />
 
         <div className="flex justify-between items-center mb-8">
@@ -87,7 +93,7 @@ function SearchPage() {
             </div>
           ) : (
             <div className="text-center p-4">
-              No dogs found. Please try again later.
+              No dogs found. Please try different filters.
             </div>
           )}
         </div>

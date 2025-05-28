@@ -1,14 +1,32 @@
 import BreedFilter from "./BreedFilter";
+import AgeSlider from "./AgeSlider";
 import type { BreedFilterProps } from "./BreedFilter/types";
 
-function SearchBar({ selectedBreeds, onBreedsChange }: BreedFilterProps) {
+interface SearchBarProps extends BreedFilterProps {
+  minAge: number;
+  maxAge: number;
+  onAgeChange: (minAge: number, maxAge: number) => void;
+}
+
+function SearchBar({
+  selectedBreeds,
+  onBreedsChange,
+  minAge,
+  maxAge,
+  onAgeChange,
+}: SearchBarProps) {
   return (
     <div className="bg-white rounded-lg shadow-md mb-6">
       <div className="p-6 border-b border-gray-200">
-        <div className="grid grid-cols-1 md:grid-cols-4 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <BreedFilter
             selectedBreeds={selectedBreeds}
             onBreedsChange={onBreedsChange}
+          />
+          <AgeSlider
+            minAge={minAge}
+            maxAge={maxAge}
+            onAgeChange={onAgeChange}
           />
         </div>
       </div>
