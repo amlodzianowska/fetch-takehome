@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../../contexts/AuthContext";
 import { useFavorites } from "../../contexts/FavoritesContext";
 import LoginButton from "../auth/LoginButton";
+import SearchButton from "../ui/SearchButton";
 import FavoritesButton from "../ui/FavoritesButton";
 
 interface HeaderProps {
@@ -42,6 +43,10 @@ function Header({ openLoginModal }: HeaderProps) {
     navigate("/favorites");
   };
 
+  const handleSearchClick = () => {
+    navigate("/search");
+  };
+
   const navbarClasses = `
     fixed top-0 left-0 right-0 z-50 transition-all duration-300 
     ${
@@ -64,10 +69,13 @@ function Header({ openLoginModal }: HeaderProps) {
 
         <div className="flex items-center space-x-4">
           {isLoggedIn && (
-            <FavoritesButton
-              onClick={handleFavoritesClick}
-              favoriteCount={favoriteDogs.length}
-            />
+            <>
+              <SearchButton onClick={handleSearchClick} />
+              <FavoritesButton
+                onClick={handleFavoritesClick}
+                favoriteCount={favoriteDogs.length}
+              />
+            </>
           )}
 
           {isLoggedIn ? (
