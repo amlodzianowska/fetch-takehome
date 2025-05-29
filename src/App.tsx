@@ -5,6 +5,8 @@ import Layout from "./components/layout/Layout";
 import LandingPage from "./pages/LandingPage";
 import SearchPage from "./pages/SearchPage";
 import type { PropsWithChildren } from "react";
+import { FavoritesProvider } from "./contexts/FavoritesContext";
+import FavoritesPage from "./pages/FavoritesPage";
 
 function ProtectedRoute({ children }: PropsWithChildren) {
   const { isLoggedIn } = useAuth();
@@ -23,20 +25,30 @@ function App() {
   return (
     <BrowserRouter>
       <AuthProvider>
-        <Layout>
-          <Routes>
-            <Route path="/" element={<LandingPage />} />
-            <Route
-              path="/search"
-              element={
-                <ProtectedRoute>
-                  <SearchPage />
-                </ProtectedRoute>
-              }
-            />
-            <Route path="*" element={<Navigate to="/" replace />} />
-          </Routes>
-        </Layout>
+        <FavoritesProvider>
+          <Layout>
+            <Routes>
+              <Route path="/" element={<LandingPage />} />
+              <Route
+                path="/search"
+                element={
+                  <ProtectedRoute>
+                    <SearchPage />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/favorites"
+                element={
+                  <ProtectedRoute>
+                    <FavoritesPage />
+                  </ProtectedRoute>
+                }
+              />
+              <Route path="*" element={<Navigate to="/" replace />} />
+            </Routes>
+          </Layout>
+        </FavoritesProvider>
       </AuthProvider>
     </BrowserRouter>
   );
