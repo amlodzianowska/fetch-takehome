@@ -6,6 +6,7 @@ import LandingPage from "./pages/LandingPage";
 import SearchPage from "./pages/SearchPage";
 import type { PropsWithChildren } from "react";
 import { FavoritesProvider } from "./contexts/FavoritesContext";
+import FavoritesPage from "./pages/FavoritesPage";
 
 function ProtectedRoute({ children }: PropsWithChildren) {
   const { isLoggedIn } = useAuth();
@@ -33,6 +34,14 @@ function App() {
                 element={
                   <ProtectedRoute>
                     <SearchPage />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/favorites"
+                element={
+                  <ProtectedRoute>
+                    <FavoritesPage />
                   </ProtectedRoute>
                 }
               />

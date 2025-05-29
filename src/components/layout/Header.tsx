@@ -1,7 +1,9 @@
 import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../../contexts/AuthContext";
+import { useFavorites } from "../../contexts/FavoritesContext";
 import LoginButton from "../auth/LoginButton";
+import FavoritesButton from "../ui/FavoritesButton";
 
 interface HeaderProps {
   openLoginModal?: () => void;
@@ -9,7 +11,9 @@ interface HeaderProps {
 
 function Header({ openLoginModal }: HeaderProps) {
   const { isLoggedIn, logout, userName } = useAuth();
+  const { favoriteDogs } = useFavorites();
   const [scrolled, setScrolled] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -34,6 +38,10 @@ function Header({ openLoginModal }: HeaderProps) {
     }
   };
 
+  const handleFavoritesClick = () => {
+    navigate("/favorites");
+  };
+
   const navbarClasses = `
     fixed top-0 left-0 right-0 z-50 transition-all duration-300 
     ${
@@ -55,6 +63,13 @@ function Header({ openLoginModal }: HeaderProps) {
         </div>
 
         <div className="flex items-center space-x-4">
+          {isLoggedIn && (
+            <FavoritesButton
+              onClick={handleFavoritesClick}
+              favoriteCount={favoriteDogs.length}
+            />
+          )}
+
           {isLoggedIn ? (
             <div className="flex items-center space-x-4">
               <span className="text-primary-500">Hello, {userName}</span>
