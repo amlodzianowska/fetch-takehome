@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { ChevronDownIcon } from "@heroicons/react/24/outline";
-import SearchInput from "../search/SearchInput";
+import SearchInput from "./FilterDropdown/SearchInput";
 import { XMarkIcon } from "@heroicons/react/20/solid";
 
 interface MultiSelectDropdownProps<T> {

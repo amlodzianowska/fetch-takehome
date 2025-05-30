@@ -1,5 +1,5 @@
+import FilterDropdown from "../ui/FilterDropdown";
 import { useBreeds } from "../../hooks/useBreeds";
-import MultiSelectDropdown from "../ui/MultiSelectDropdown";
 
 interface BreedFilterProps {
   selectedBreeds: string[];
@@ -17,7 +17,7 @@ function BreedFilter({ selectedBreeds, onBreedsChange }: BreedFilterProps) {
     );
 
   return (
-    <MultiSelectDropdown
+    <FilterDropdown
       items={breeds}
       selectedItems={selectedBreeds}
       onSelectionChange={onBreedsChange}
@@ -28,9 +28,6 @@ function BreedFilter({ selectedBreeds, onBreedsChange }: BreedFilterProps) {
       placeholder="Search breeds..."
       loading={loading}
       error={error}
-      confirmOnClose={true}
-      showSearch={true}
-      showSelectAll={false}
     />
   );
 }
