@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { HeartIcon } from "@heroicons/react/24/outline";
 import { HeartIcon as HeartSolidIcon } from "@heroicons/react/24/solid";
+import { HEART_ANIMATION_DURATION } from "../../constants";
 
 interface HeartButtonProps {
   dogId: string;
@@ -12,7 +13,7 @@ function HeartButton({ dogId, isLiked, onToggleLike }: HeartButtonProps) {
   const [isAnimating, setIsAnimating] = useState(false);
 
   const handleClick = (e: React.MouseEvent) => {
-    e.preventDefault(); // Prevent any parent click events
+    e.preventDefault();
     e.stopPropagation();
 
     setIsAnimating(true);
@@ -21,7 +22,7 @@ function HeartButton({ dogId, isLiked, onToggleLike }: HeartButtonProps) {
 
     setTimeout(() => {
       setIsAnimating(false);
-    }, 300);
+    }, HEART_ANIMATION_DURATION);
   };
 
   return (

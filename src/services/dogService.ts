@@ -1,5 +1,6 @@
 import config, { getApiUrl } from "../config";
 import type { Dog } from "../types";
+import { DEFAULT_SEARCH_SIZE, DEFAULT_SORT } from "../constants";
 
 export interface DogSearchParams {
   size?: number;
@@ -35,11 +36,11 @@ const dogService = {
   searchDogs: async (
     params: DogSearchParams = {}
   ): Promise<DogSearchResults> => {
-    const size = params.size || 100;
+    const size = params.size || DEFAULT_SEARCH_SIZE;
 
     const queryParams = new URLSearchParams();
     queryParams.append("size", size.toString());
-    queryParams.append("sort", params.sort || "breed:asc");
+    queryParams.append("sort", params.sort || DEFAULT_SORT);
 
     if (params.from) {
       queryParams.append("from", params.from);
