@@ -1,6 +1,6 @@
 import BreedFilter from "./BreedFilter";
 import AgeSlider from "./AgeSlider";
-import type { BreedFilterProps } from "./BreedFilter/types";
+import type { BreedFilterProps } from "./types";
 
 interface SearchBarProps extends BreedFilterProps {
   minAge: number;
