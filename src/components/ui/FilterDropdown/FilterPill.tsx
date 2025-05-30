@@ -1,24 +1,27 @@
 import { XMarkIcon } from "@heroicons/react/20/solid";
+import type { FilterPillProps } from "./types";
 
-function BreedPill({
-  breed,
-  toggleBreed,
-}: {
-  breed: string;
-  toggleBreed: (breed: string) => void;
-}) {
+function FilterPill<T>({
+  item,
+  renderItem,
+  getItemKey,
+  onRemove,
+}: FilterPillProps<T>) {
+  const itemKey = getItemKey(item);
+  const itemDisplay = renderItem(item);
+
   return (
     <span
-      key={breed}
+      key={itemKey}
       className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-primary-100 text-primary-800"
     >
-      {breed}
+      {itemDisplay}
       <button
         type="button"
         className="ml-1.5 inline-flex text-primary-600 hover:text-primary-900"
         onClick={(e) => {
           e.stopPropagation();
-          toggleBreed(breed);
+          onRemove(item);
         }}
       >
         <span className="sr-only">Remove</span>
@@ -28,4 +31,4 @@ function BreedPill({
   );
 }
 
-export default BreedPill;
+export default FilterPill;

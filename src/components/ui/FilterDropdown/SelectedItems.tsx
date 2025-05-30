@@ -1,12 +1,14 @@
-import BreedPill from "./BreedPill";
-import type { SelectedBreedsProps } from "./types";
+import FilterPill from "./FilterPill";
+import type { SelectedItemsProps } from "./types";
 
-function SelectedBreeds({
-  pendingBreeds,
-  toggleBreed,
+function SelectedItems<T>({
+  pendingItems,
+  renderItem,
+  getItemKey,
+  toggleItem,
   clearAll,
-}: SelectedBreedsProps) {
-  if (pendingBreeds.length === 0) {
+}: SelectedItemsProps<T>) {
+  if (pendingItems.length === 0) {
     return null;
   }
 
@@ -14,7 +16,7 @@ function SelectedBreeds({
     <div className="mt-3 pt-3 border-t border-gray-200">
       <div className="flex justify-between items-center mb-2">
         <h4 className="text-sm font-medium text-gray-700">
-          Selected ({pendingBreeds.length}):
+          Selected ({pendingItems.length}):
         </h4>
         <button
           onClick={(e) => {
@@ -27,12 +29,18 @@ function SelectedBreeds({
         </button>
       </div>
       <div className="flex flex-wrap gap-2 mb-3">
-        {pendingBreeds.map((breed) => (
-          <BreedPill key={breed} breed={breed} toggleBreed={toggleBreed} />
+        {pendingItems.map((item) => (
+          <FilterPill
+            key={getItemKey(item)}
+            item={item}
+            renderItem={renderItem}
+            getItemKey={getItemKey}
+            onRemove={toggleItem}
+          />
         ))}
       </div>
     </div>
   );
 }
 
-export default SelectedBreeds;
+export default SelectedItems;
