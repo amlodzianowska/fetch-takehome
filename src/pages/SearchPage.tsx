@@ -5,6 +5,7 @@ import { useSearch } from "../hooks/useSearch";
 import PageLayout from "../components/layout/PageLayout";
 import SearchControls from "../components/search/SearchControls";
 import SearchResults from "../components/search/SearchResults";
+import { DEFAULT_INITIAL_PAGE_SIZE, DEFAULT_SORT } from "../constants";
 
 function SearchPage() {
   const navigate = useNavigate();
@@ -28,8 +29,8 @@ function SearchPage() {
     setCurrentPageSize,
     setAgeRange,
   } = useSearch({
-    initialSize: 24,
-    initialSort: "breed:asc",
+    initialSize: DEFAULT_INITIAL_PAGE_SIZE,
+    initialSort: DEFAULT_SORT,
   });
 
   useEffect(() => {

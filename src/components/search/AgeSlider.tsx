@@ -1,6 +1,7 @@
 import Slider from "rc-slider";
 import "rc-slider/assets/index.css";
 import { useState } from "react";
+import { MIN_DOG_AGE, MAX_DOG_AGE } from "../../constants";
 
 interface AgeSliderProps {
   minAge: number;
@@ -18,17 +19,17 @@ function AgeSlider({ minAge, maxAge, onAgeChange }: AgeSliderProps) {
       </h3>
       <Slider
         range
-        min={0}
-        max={15}
+        min={MIN_DOG_AGE}
+        max={MAX_DOG_AGE}
         defaultValue={[minAge, maxAge]}
         onChangeComplete={(value: number | number[]) => {
           const [min, max] = Array.isArray(value) ? value : [value, value];
           onAgeChange(min, max);
           setRange(
-            min === 0 && max === 15
+            min === MIN_DOG_AGE && max === MAX_DOG_AGE
               ? "All Ages"
-              : max === 15
-              ? `${min} - 15+`
+              : max === MAX_DOG_AGE
+              ? `${min} - ${MAX_DOG_AGE}+`
               : `${min} - ${max}`
           );
         }}

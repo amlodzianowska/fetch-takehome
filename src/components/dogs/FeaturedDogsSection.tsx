@@ -19,12 +19,8 @@ function FeaturedDogsSection({
   const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
-    const timer = setTimeout(() => {
-      setDogs(featuredDogs.slice(0, limit));
-      setLoading(false);
-    }, 500);
-
-    return () => clearTimeout(timer);
+    setDogs(featuredDogs.slice(0, limit));
+    setLoading(false);
   }, [limit]);
 
   return (

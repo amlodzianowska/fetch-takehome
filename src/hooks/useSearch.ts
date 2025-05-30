@@ -3,6 +3,13 @@ import dogService from "../services/dogService";
 import type { DogSearchParams } from "../services/dogService";
 import type { Dog } from "../types";
 import { getApiUrl } from "../config";
+import {
+  DEFAULT_INITIAL_PAGE_SIZE,
+  DEFAULT_SORT,
+  LOAD_MORE_BATCH_SIZE,
+  MIN_DOG_AGE,
+  MAX_DOG_AGE,
+} from "../constants";
 
 interface UseSearchOptions {
   initialSize?: number;
@@ -34,7 +41,10 @@ interface UseSearchReturn {
 }
 
 export function useSearch(options: UseSearchOptions = {}): UseSearchReturn {
-  const { initialSize = 24, initialSort = "breed:asc" } = options;
+  const {
+    initialSize = DEFAULT_INITIAL_PAGE_SIZE,
+    initialSort = DEFAULT_SORT,
+  } = options;
 
   const [displayedDogs, setDisplayedDogs] = useState<Dog[]>([]);
   const [loading, setLoading] = useState(true);
@@ -44,8 +54,8 @@ export function useSearch(options: UseSearchOptions = {}): UseSearchReturn {
   const [selectedBreeds, setSelectedBreeds] = useState<string[]>([]);
   const [currentSort, setCurrentSort] = useState<string>(initialSort);
   const [currentPageSize, setCurrentPageSize] = useState<number>(initialSize);
-  const [minAge, setMinAge] = useState<number>(0);
-  const [maxAge, setMaxAge] = useState<number>(15);
+  const [minAge, setMinAge] = useState<number>(MIN_DOG_AGE);
+  const [maxAge, setMaxAge] = useState<number>(MAX_DOG_AGE);
 
   const [nextCursor, setNextCursor] = useState<string | null>(null);
   const [matchingDogCount, setMatchingDogCount] = useState<number>(0);
@@ -63,7 +73,7 @@ export function useSearch(options: UseSearchOptions = {}): UseSearchReturn {
 
       try {
         const searchParams: DogSearchParams = {
-          size: isInitialSearch ? currentPageSize : 25,
+          size: isInitialSearch ? currentPageSize : LOAD_MORE_BATCH_SIZE,
           sort: currentSort,
         };
 
@@ -71,11 +81,11 @@ export function useSearch(options: UseSearchOptions = {}): UseSearchReturn {
           searchParams.breeds = selectedBreeds;
         }
 
-        if (minAge > 0) {
+        if (minAge > MIN_DOG_AGE) {
           searchParams.ageMin = minAge;
         }
 
-        if (maxAge < 15) {
+        if (maxAge < MAX_DOG_AGE) {
           searchParams.ageMax = maxAge;
         }
 
