@@ -2,12 +2,9 @@ import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
 import { useSearch } from "../hooks/useSearch";
-import DogCard from "../components/dogs/DogCard";
-import Spinner from "../components/ui/Spinner";
-import SearchBar from "../components/search/SearchBar";
-import SortControls from "../components/search/SortControls";
-import PageSizeSelector from "../components/search/PageSizeSelector";
-import LoadMoreButton from "../components/search/LoadMoreButton";
+import PageLayout from "../components/layout/PageLayout";
+import SearchControls from "../components/search/SearchControls";
+import SearchResults from "../components/search/SearchResults";
 
 function SearchPage() {
   const navigate = useNavigate();
@@ -46,69 +43,32 @@ function SearchPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 pt-24 pb-16">
-      <div className="container mx-auto px-4">
-        <h1 className="text-3xl font-bold text-gray-800 mb-8">
-          Find Your New Best Friend
-        </h1>
+    <PageLayout title="Find Your New Best Friend">
+      <SearchControls
+        selectedBreeds={selectedBreeds}
+        onBreedsChange={setSelectedBreeds}
+        minAge={minAge}
+        maxAge={maxAge}
+        onAgeChange={setAgeRange}
+        currentSort={currentSort}
+        onSortChange={setCurrentSort}
+        currentPageSize={currentPageSize}
+        onPageSizeChange={setCurrentPageSize}
+        displayedCount={displayedDogs.length}
+        totalCount={matchingDogCount}
+        loading={loading}
+      />
 
-        <SearchBar
-          selectedBreeds={selectedBreeds}
-          onBreedsChange={setSelectedBreeds}
-          minAge={minAge}
-          maxAge={maxAge}
-          onAgeChange={setAgeRange}
-        />
-
-        <div className="flex justify-between items-center mb-8">
-          <SortControls
-            currentSort={currentSort}
-            onSortChange={setCurrentSort}
-          />
-
-          <div className="flex items-center space-x-4">
-            <span className="text-sm text-gray-600">
-              {loading
-                ? "Loading..."
-                : `Showing ${displayedDogs.length} of ${matchingDogCount} dogs`}
-            </span>
-            <PageSizeSelector
-              currentPageSize={currentPageSize}
-              onPageSizeChange={setCurrentPageSize}
-              totalCount={matchingDogCount}
-            />
-          </div>
-        </div>
-
-        <div className="bg-white rounded-lg shadow-md p-6">
-          {loading ? (
-            <Spinner />
-          ) : error ? (
-            <div className="text-center text-red-500 p-4">{error}</div>
-          ) : displayedDogs.length > 0 ? (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-              {displayedDogs.map((dog) => (
-                <DogCard key={dog.id} dog={dog} />
-              ))}
-            </div>
-          ) : (
-            <div className="text-center p-4">
-              No dogs found. Please try different filters.
-            </div>
-          )}
-        </div>
-
-        {hasMore && (
-          <div className="mt-12 text-center">
-            <LoadMoreButton
-              loadMoreDogs={loadMoreDogs}
-              isLoadingMore={isLoadingMore}
-              remainingDogs={matchingDogCount - displayedDogs.length}
-            />
-          </div>
-        )}
-      </div>
-    </div>
+      <SearchResults
+        dogs={displayedDogs}
+        loading={loading}
+        error={error}
+        hasMore={hasMore}
+        isLoadingMore={isLoadingMore}
+        remainingCount={matchingDogCount - displayedDogs.length}
+        onLoadMore={loadMoreDogs}
+      />
+    </PageLayout>
   );
 }
 
