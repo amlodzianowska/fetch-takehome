@@ -28,9 +28,7 @@ function Spinner({
         className={`animate-spin rounded-full ${sizeClasses[size]} ${colorClasses[color]} ${className}`}
         role="status"
         aria-label="Loading"
-      >
-        <span className="sr-only">Loading...</span>
-      </div>
+      ></div>
     </div>
   );
 }
