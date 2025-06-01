@@ -31,7 +31,7 @@ function DogGrid({
   if (loading) {
     return (
       <div className={`bg-white rounded-lg shadow-md p-6 ${className}`}>
-        <Spinner />
+        <Spinner size="lg" />
       </div>
     );
   }
