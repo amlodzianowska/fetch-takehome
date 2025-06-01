@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import ButtonSpinner from "./ButtonSpinner";
+import Spinner from "./Spinner";
 
 interface ButtonProps {
   type?: "button" | "submit" | "reset";
@@ -53,7 +53,7 @@ export function Button({
       onClick={onClick}
       className={classes}
     >
-      {loading ? <ButtonSpinner /> : children}
+      {loading ? <Spinner size="sm" color="white" /> : children}
     </button>
   );
 }

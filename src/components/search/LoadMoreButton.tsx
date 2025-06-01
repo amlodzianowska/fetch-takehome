@@ -1,4 +1,5 @@
 import { PlusIcon } from "@heroicons/react/24/outline";
+import Spinner from "../ui/Spinner";
 
 interface LoadMoreButtonProps {
   loadMoreDogs: () => void;
@@ -28,7 +29,8 @@ function LoadMoreButton({
     >
       {isLoadingMore ? (
         <>
-          <div className="animate-spin -ml-1 mr-3 h-5 w-5 border-2 border-white rounded-full border-t-transparent"></div>
+          <Spinner size="sm" color="white" className="mr-3" />{" "}
+          {/* ← Updated to use Spinner component */}
           Loading More Dogs...
         </>
       ) : (
