@@ -33,24 +33,7 @@ function AgeSlider({ minAge, maxAge, onAgeChange }: AgeSliderProps) {
               : `${min} - ${max}`
           );
         }}
-        className="mb-4 color-primary"
-        styles={{
-          track: {
-            backgroundColor: "#ff8800",
-            height: 6,
-          },
-          handle: {
-            borderColor: "#ff8800",
-            backgroundColor: "white",
-            boxShadow: "0 2px 4px rgba(0,0,0,0.1)",
-            width: 18,
-            height: 18,
-          },
-          rail: {
-            backgroundColor: "#E5E7EB",
-            height: 6,
-          },
-        }}
+        className="mb-4 age-slider"
       />
     </div>
   );
