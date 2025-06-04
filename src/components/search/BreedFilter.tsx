@@ -1,12 +1,16 @@
 import FilterDropdown from "../ui/FilterDropdown";
 import { useBreeds } from "../../hooks/useBreeds";
+import { withErrorBoundary } from "../errorBoundary/withErrorBoundary";
 
 interface BreedFilterProps {
   selectedBreeds: string[];
   onBreedsChange: (breeds: string[]) => void;
 }
 
-function BreedFilter({ selectedBreeds, onBreedsChange }: BreedFilterProps) {
+function BreedFilterComponent({
+  selectedBreeds,
+  onBreedsChange,
+}: BreedFilterProps) {
   const { breeds, loading, error } = useBreeds();
 
   const renderBreed = (breed: string) => breed;
@@ -31,5 +35,27 @@ function BreedFilter({ selectedBreeds, onBreedsChange }: BreedFilterProps) {
     />
   );
 }
+
+const BreedFilter = withErrorBoundary(BreedFilterComponent, {
+  fallback: (
+    <div className="bg-white p-4 rounded-lg shadow-md">
+      <h3 className="text-lg font-semibold mb-3 text-gray-400">
+        Filter by Breed
+      </h3>
+      <div className="text-center py-8">
+        <p className="text-gray-500 text-sm">Filter temporarily unavailable</p>
+        <button
+          onClick={() => window.location.reload()}
+          className="mt-2 text-primary-600 text-sm hover:text-primary-800"
+        >
+          Refresh to try again
+        </button>
+      </div>
+    </div>
+  ),
+  onError: (error) => {
+    console.error("BreedFilter error:", error);
+  },
+});
 
 export default BreedFilter;
