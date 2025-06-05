@@ -1,7 +1,7 @@
+import { useState } from "react";
 import { HeartIcon } from "@heroicons/react/24/outline";
 import { HeartIcon as HeartSolidIcon } from "@heroicons/react/24/solid";
 import { HEART_ANIMATION_DURATION } from "../../constants";
-import { useState } from "react";
 
 interface HeartButtonProps {
   dogId: string;
