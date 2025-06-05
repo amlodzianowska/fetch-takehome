@@ -2,7 +2,6 @@ import { useState } from "react";
 import { HeartIcon } from "@heroicons/react/24/outline";
 import { HeartIcon as HeartSolidIcon } from "@heroicons/react/24/solid";
 import { HEART_ANIMATION_DURATION } from "../../constants";
-import { withErrorBoundary } from "../errorBoundary/withErrorBoundary";
 
 interface HeartButtonProps {
   dogId: string;
@@ -10,26 +9,18 @@ interface HeartButtonProps {
   onToggleLike: (dogId: string) => void;
 }
 
-function HeartButtonComponent({
-  dogId,
-  isLiked,
-  onToggleLike,
-}: HeartButtonProps) {
+function HeartButton({ dogId, isLiked, onToggleLike }: HeartButtonProps) {
   const [isAnimating, setIsAnimating] = useState(false);
 
   const handleClick = (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
-
     setIsAnimating(true);
-
     onToggleLike(dogId);
-
     setTimeout(() => {
       setIsAnimating(false);
     }, HEART_ANIMATION_DURATION);
   };
-
   return (
     <button
       onClick={handleClick}
@@ -48,16 +39,5 @@ function HeartButtonComponent({
     </button>
   );
 }
-
-const HeartButton = withErrorBoundary(HeartButtonComponent, {
-  fallback: (
-    <div className="absolute top-2 right-2 p-2">
-      <div className="w-5 h-5 bg-gray-300 rounded-full"></div>
-    </div>
-  ),
-  onError: (error) => {
-    console.error("HeartButton error:", error);
-  },
-});
 
 export default HeartButton;
