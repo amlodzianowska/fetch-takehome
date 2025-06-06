@@ -15,16 +15,12 @@ function HeartButton({ dogId, isLiked, onToggleLike }: HeartButtonProps) {
   const handleClick = (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
-
     setIsAnimating(true);
-
     onToggleLike(dogId);
-
     setTimeout(() => {
       setIsAnimating(false);
     }, HEART_ANIMATION_DURATION);
   };
-
   return (
     <button
       onClick={handleClick}
