@@ -12,7 +12,6 @@ function ProtectedRoute({ children }: PropsWithChildren) {
   const { isLoggedIn } = useAuth();
   const savedUserName = localStorage.getItem("userName");
 
-  // Check both context state and localStorage
   if (!isLoggedIn && !savedUserName) {
     console.log("Protected route: User not authenticated, redirecting to home");
     return <Navigate to="/" replace />;

@@ -52,7 +52,6 @@ const dogService = {
       });
     }
 
-    // Add age filtering
     if (params.ageMin !== undefined && params.ageMin > 0) {
       queryParams.append("ageMin", params.ageMin.toString());
     }

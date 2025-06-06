@@ -8,7 +8,6 @@ function NewsletterForm({ onSubscribe }: NewsletterFormProps) {
   const [email, setEmail] = useState<string>("");
   const [isSubscribed, setIsSubscribed] = useState<boolean>(false);
 
-  // Load subscription status from localStorage on component mount
   useEffect(() => {
     const savedSubscriptionStatus = localStorage.getItem(
       "newsletter_subscribed"
